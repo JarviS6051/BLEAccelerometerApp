@@ -54,6 +54,11 @@ export const DeviceScreen: React.FC<Props> = ({ ble }) => {
 					/>
 					<PrimaryButton title="Disconnect" onPress={ble.disconnect} danger />
 				</View>
+				<View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
+					<PrimaryButton title="Send Start (0x01)" onPress={() => ble.sendStartCommand(1)} />
+					<PrimaryButton title="Send Start (0x02)" onPress={() => ble.sendStartCommand(2)} />
+					<PrimaryButton title="Send Start (0xFF)" onPress={() => ble.sendStartCommand(255)} />
+				</View>
 			</View>
 
 			<View

@@ -62,28 +62,64 @@ export const ScannerScreen: React.FC<Props> = ({ ble }) => {
 				</View>
 			</View>
 
-			<FlatList
-				style={{ flex: 1, paddingHorizontal: 16, paddingTop: 10 }}
-				keyboardShouldPersistTaps="always"
-				data={
-					ble.devices.length > 0
-						? ble.devices
-						: [{ id: 'sample-device', name: 'Sample Accelerometer', isSample: true }]
-				}
-				keyExtractor={(d) => d.id}
-				contentContainerStyle={{ gap: 10, paddingBottom: 16 }}
-				renderItem={({ item }) => (
-					<DeviceListItem item={item as any} onPress={ble.connectTo} />
-				)}
-				ListEmptyComponent={
-					<View style={{ alignItems: 'center', marginTop: 16 }}>
-						<Text style={{ color: '#9ca3af' }}>{ble.isScanning ? 'Scanning…' : 'No devices found.'}</Text>
-						<TouchableOpacity onPress={() => ble.connectTo({ id: 'sample-device', name: 'Sample Accelerometer', isSample: true })} style={{ padding: 10 }}>
-							<Text style={{ color: '#22c55e', fontWeight: '700' }}>Use Sample Device</Text>
-						</TouchableOpacity>
+			<View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 10 }}>
+				{ble.isScanning && (
+					<View style={{ 
+						backgroundColor: '#1e40af', 
+						padding: 12, 
+						borderRadius: 10, 
+						marginBottom: 10,
+						flexDirection: 'row',
+						alignItems: 'center',
+						gap: 8
+					}}>
+						<Text style={{ color: '#93c5fd', fontWeight: '600' }}>🔍</Text>
+						<Text style={{ color: '#93c5fd', fontWeight: '600' }}>
+							Scanning for devices... ({ble.devices.length} found)
+						</Text>
 					</View>
-				}
-			/>
+				)}
+				
+				{ble.devices.length > 0 && (
+					<Text style={{ 
+						color: '#9ca3af', 
+						marginBottom: 10, 
+						fontSize: 14,
+						fontWeight: '500'
+					}}>
+						Found {ble.devices.length} device{ble.devices.length !== 1 ? 's' : ''}:
+					</Text>
+				)}
+				
+				<FlatList
+					style={{ flex: 1 }}
+					keyboardShouldPersistTaps="always"
+					data={ble.devices}
+					keyExtractor={(d) => d.id}
+					contentContainerStyle={{ gap: 10, paddingBottom: 16 }}
+					renderItem={({ item }) => (
+						<DeviceListItem item={item as any} onPress={ble.connectTo} />
+					)}
+					ListEmptyComponent={
+						<View style={{ alignItems: 'center', marginTop: 16 }}>
+							<Text style={{ color: '#9ca3af', textAlign: 'center', marginBottom: 16 }}>
+								{ble.isScanning ? 'Scanning for nearby devices...' : 'No devices found. Tap Scan to discover devices.'}
+							</Text>
+							<TouchableOpacity 
+								onPress={() => ble.connectTo({ id: 'sample-device', name: 'Sample Accelerometer', isSample: true })} 
+								style={{ 
+									backgroundColor: '#22c55e',
+									paddingHorizontal: 20,
+									paddingVertical: 12,
+									borderRadius: 10
+								}}
+							>
+								<Text style={{ color: 'white', fontWeight: '700' }}>Use Sample Device</Text>
+							</TouchableOpacity>
+						</View>
+					}
+				/>
+			</View>
 		</View>
 	);
 };

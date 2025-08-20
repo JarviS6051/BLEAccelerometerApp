@@ -14,22 +14,42 @@ export const DeviceListItem: React.FC<Props> = ({ item, onPress }) => {
 			style={{
 				backgroundColor: '#111827',
 				borderRadius: 14,
-				padding: 14,
+				padding: 16,
 				borderWidth: 1,
 				borderColor: item.isSample ? '#22c55e55' : '#1f2937',
+				flexDirection: 'row',
+				alignItems: 'center',
+				gap: 12,
 			}}
 		>
-			<Text style={{ color: 'white', fontWeight: '800', fontSize: 16 }}>
-				{item.name ?? '(no name)'}
-			</Text>
-			<Text selectable style={{ color: '#9ca3af', marginTop: 4, fontSize: 12 }}>
-				{item.id}
-			</Text>
-			{item.isSample && (
-				<Text style={{ color: '#86efac', marginTop: 8 }}>
-					No devices? Use this sample to simulate data.
+			<View style={{
+				width: 40,
+				height: 40,
+				borderRadius: 20,
+				backgroundColor: item.isSample ? '#22c55e' : '#3b82f6',
+				alignItems: 'center',
+				justifyContent: 'center',
+			}}>
+				<Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
+					{item.isSample ? '📱' : '📶'}
 				</Text>
-			)}
+			</View>
+			
+			<View style={{ flex: 1 }}>
+				<Text style={{ color: 'white', fontWeight: '800', fontSize: 16 }}>
+					{item.name ?? '(no name)'}
+				</Text>
+				<Text selectable style={{ color: '#9ca3af', marginTop: 2, fontSize: 12 }}>
+					{item.id}
+				</Text>
+				{item.isSample && (
+					<Text style={{ color: '#86efac', marginTop: 4, fontSize: 12 }}>
+						Simulated accelerometer data
+					</Text>
+				)}
+			</View>
+			
+			<Text style={{ color: '#6b7280', fontSize: 20 }}>›</Text>
 		</TouchableOpacity>
 	);
 };
