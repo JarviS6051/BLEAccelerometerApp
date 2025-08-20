@@ -1,79 +1,210 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# BLE Accelerometer App
 
-# Getting Started
+A React Native application for scanning Bluetooth Low Energy (BLE) devices, connecting to accelerometer sensors, and recording/exporting accelerometer data in real-time.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Features
 
-## Step 1: Start the Metro Server
+- 🔍 **BLE Device Scanning**: Discover nearby BLE devices
+- 🔗 **Device Connection**: Connect to accelerometer devices
+- 📊 **Real-time Data**: View live accelerometer X, Y, Z values
+- 📝 **Data Recording**: Capture timestamped accelerometer readings
+- 📁 **CSV Export**: Save data as CSV files with share functionality
+- 🎮 **Mock Mode**: Test with simulated accelerometer data
+- 🎨 **Modern UI**: Dark theme with intuitive interface
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Prerequisites
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Before running this app, ensure you have:
+
+- **Node.js** (v18 or higher)
+- **React Native CLI** installed globally
+- **Android Studio** (for Android development)
+- **Xcode** (for iOS development, macOS only)
+- **Physical device** or **emulator** with Bluetooth support
+
+## Installation
+
+1. **Clone or download** this project
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **iOS Setup** (macOS only):
+   ```bash
+   cd ios
+   pod install
+   cd ..
+   ```
+
+## How to Run
+
+### Step 1: Start Metro Bundler
+
+Open a terminal in the project root and run:
 
 ```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
+npx react-native start
 ```
 
-## Step 2: Start your Application
+This starts the Metro bundler on port 8081. Keep this terminal running.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### Step 2: Run on Device/Emulator
 
-### For Android
+Open a **new terminal** in the project root and run:
 
+#### For Android:
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+npx react-native run-android
 ```
 
-### For iOS
-
+#### For iOS (macOS only):
 ```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npx react-native run-ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+### Step 3: Grant Permissions
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+When the app launches, grant the required permissions:
+- **Bluetooth permissions** (Android 12+)
+- **Location permissions** (Android ≤11, required for BLE scanning)
 
-## Step 3: Modifying your App
+## Usage Guide
 
-Now that you have successfully run the app, let's modify it.
+### For Real BLE Device (Interview/Production)
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+1. **Enable Bluetooth** on your device
+2. **Tap "Scan"** - scans for 8 seconds automatically
+3. **Connect to your device** from the discovered list
+4. **Tap "Discover & Log Services"** to find UUIDs
+5. **Check Metro console** for service/characteristic UUIDs
+6. **Update UUIDs** in `App.tsx`:
+   ```tsx
+   const ACCEL_SERVICE_UUID = 'YOUR_ACTUAL_SERVICE_UUID';
+   const ACCEL_CHAR_UUID = 'YOUR_ACTUAL_CHARACTERISTIC_UUID';
+   ```
+7. **Restart the app** (shake device → Reload)
+8. **Tap "Start Notifications"** to stream accelerometer data
+9. **Tap "Start Recording"** to capture data
+10. **Tap "Export CSV"** to save/share the data
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+### For Testing (Sample Device)
 
-## Congratulations! :tada:
+1. **Tap "Scan"** - if no devices found, "Sample Accelerometer" appears
+2. **Tap the Sample Device** to connect
+3. **Tap "Start Notifications"** - see simulated accelerometer values
+4. **Tap "Start Recording"** to capture simulated data
+5. **Tap "Export CSV"** to save/share
 
-You've successfully run and modified your React Native App. :partying_face:
+## App Features
 
-### Now what?
+### 🔍 Device Scanning
+- **Auto-scan**: 8-second automatic scan
+- **Manual stop**: Tap "Stop" to end scanning early
+- **Device filtering**: Filter by device name prefix
+- **Sample device**: Automatically appears if no real devices found
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+### 📊 Real-time Monitoring
+- **Live values**: X, Y, Z accelerometer values update in real-time
+- **Data format**: Supports int16 (default) and float32 formats
+- **Mock data**: Realistic sine wave simulation for testing
 
-# Troubleshooting
+### 📝 Data Recording
+- **Start/Stop**: Toggle recording on/off
+- **Timestamped**: Each reading includes millisecond timestamp
+- **Row counter**: Shows number of recorded data points
+- **Clear data**: Reset recorded data
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+### 📁 CSV Export
+- **Automatic formatting**: Proper CSV headers and data
+- **File location**: Saved to app Documents directory
+- **Share integration**: Opens system share sheet
+- **Cross-platform**: Works on both Android and iOS
 
-# Learn More
+## Configuration
 
-To learn more about React Native, take a look at the following resources:
+### UUID Configuration
+Update these constants in `App.tsx` for your specific device:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```tsx
+const ACCEL_SERVICE_UUID: string | null = 'YOUR_SERVICE_UUID';
+const ACCEL_CHAR_UUID: string | null = 'YOUR_CHARACTERISTIC_UUID';
+```
+
+### Data Format
+Choose the correct format for your device:
+
+```tsx
+const PAYLOAD_FORMAT: 'int16' | 'float32' = 'int16'; // or 'float32'
+```
+
+### Device Filtering
+Filter devices by name prefix:
+
+```tsx
+const DEVICE_NAME_PREFIX = 'Accel'; // or '' to show all devices
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Buttons not responding:**
+- Shake device → "Reload" to restart
+- Check Metro logs for errors
+
+**No devices found:**
+- Ensure Bluetooth is enabled
+- Check device permissions
+- Use "Sample Device" for testing
+
+**Connection fails:**
+- Verify device is advertising
+- Check device is in range
+- Review Metro logs for BLE errors
+
+**CSV export fails:**
+- Check file permissions
+- Ensure sufficient storage space
+- Try sharing via system share sheet
+
+### Development Tips
+
+- **Metro Logs**: Watch terminal for BLE debug information
+- **Hot Reload**: Save `App.tsx` → app updates automatically
+- **UUID Discovery**: Use "Discover & Log Services" to find device UUIDs
+- **Data Format**: Adjust `PAYLOAD_FORMAT` if device uses different format
+
+## File Structure
+
+```
+BLEAccelerometerApp/
+├── App.tsx                 # Main application component
+├── android/                # Android-specific configuration
+│   └── app/src/main/
+│       └── AndroidManifest.xml  # BLE permissions
+├── ios/                    # iOS-specific configuration
+│   └── BLEAccelerometerApp/
+│       └── Info.plist      # Bluetooth usage descriptions
+└── package.json            # Dependencies and scripts
+```
+
+## Dependencies
+
+- **react-native-ble-plx**: BLE device communication
+- **react-native-fs**: File system operations
+- **react-native-permissions**: Permission handling
+
+## Platform Support
+
+- ✅ **Android**: Full BLE support with proper permissions
+- ✅ **iOS**: Full BLE support with usage descriptions
+- ✅ **Cross-platform**: Consistent behavior across platforms
+
+## License
+
+This project is for educational and interview purposes.
+
+---
+
+**Ready to use!** 🚀 Connect your BLE accelerometer device and start recording data.
